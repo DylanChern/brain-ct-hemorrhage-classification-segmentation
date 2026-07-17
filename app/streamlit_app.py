@@ -42,8 +42,8 @@ DISPLAY_NAMES = {
 # Sample image filenames — must exist in sample_images/ alongside this script
 SAMPLE_IMAGES = {
     "epidural": "epidural_sample.png",
-    "intraparenchymal": "intraparenchymal_sample.png",
-    "intraventricular": "intraventricular_sample.png",
+    "intraparenchymal": "intraparenchymal_sample.jpeg",
+    "intraventricular": "intraventricular_sample.jpg",
     "subarachnoid": "subarachnoid_sample.png",
     "subdural": "subdural_sample.png",
     "multi": "multi_sample.jpg",
@@ -98,6 +98,13 @@ st.write(
 st.caption(
     "⚠️ This is an academic demo, not a diagnostic tool. The underlying model achieved "
     "~59% validation accuracy — see the project README for full results and limitations."
+)
+st.caption(
+    "ℹ️ The 7 sample images below were chosen to show the model behaving well on inputs "
+    "it handles reasonably confidently. Real performance varies a lot by class — this "
+    "model is especially weak on **epidural** and **normal** cases, largely due to those "
+    "classes being underrepresented in the training data. Don't expect the same reliability "
+    "across every category; see the README for class-level accuracy details."
 )
 
 st.divider()
