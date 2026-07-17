@@ -37,27 +37,39 @@ An interactive Streamlit app (`app/streamlit_app.py`) lets users run the CNN on 
 | Class | Source |
 |---|---|
 | Epidural | Haouimi A, Epidural hematoma. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-88365 *(rotated ~20° to correct head tilt)* |
-| Intraparenchymal | Puyó D, Lobar intraparenchymal hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-20297 |
-| Intraventricular | Puyó Vera D, Intraventricular hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-36523 *(cropped to remove scanner-bed artifacts outside the skull)* |
-| Subarachnoid | Puyó D, Subarachnoid hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-22377 |
+| Intraparenchymal | Rodrigues M, Lobar intracerebral hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-58532 |
+| Intraventricular | Puyó Vera D, Intraventricular hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-23698 |
+| Subarachnoid | Verduga T, Aneurysmal subarachnoid hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-24740 |
 | Subdural | Gaillard F, Subdural hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-17559 |
 | Multi | Sorrentino S, Combination of subdural, epidural, and subarachnoid hemorrhage in an open skull fracture. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-14868 |
 | Normal | Glick Y, Normal CT head. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-178062 |
 
-### A note on choosing (or adding) demo images
+### Class-level performance (final SoftMax CNN)
 
-Getting these 7 images right took real trial and error. Our CNN was trained on DICOM scans rendered through a specific `brain_window` pipeline, and the model's ~59% validation accuracy means it's sensitive to inputs that drift from that distribution. A few early candidate images produced clearly wrong, overconfident predictions — not because the model is broken, but because the images themselves weren't great matches for what it was trained on. Two issues came up repeatedly:
+Overall validation accuracy (~59%) hides a lot of variation by class. From the final report's detailed evaluation:
 
-- **Scanner/viewer artifacts outside the skull** (stray marks, positioning lines, DICOM viewer overlay text) — these can visually resemble pathology (e.g., a curved external mark can read like a subdural crescent to a small CNN) and measurably skewed predictions in our testing.
-- **Rotated or tilted head positioning** — since it's unclear whether this model's training pipeline included rotation augmentation, a visibly tilted scan may confuse it more than a straight one.
+| Class | Precision | Recall | F1-score | Support |
+|---|---|---|---|---|
+| Epidural | 0.86 | **0.06** | 0.11 | 339 |
+| Intraparenchymal | 0.55 | 0.42 | 0.48 | 3,133 |
+| Intraventricular | 0.61 | 0.40 | 0.48 | 1,975 |
+| Subarachnoid | 0.57 | 0.33 | 0.42 | 3,285 |
+| Subdural | 0.58 | 0.84 | 0.69 | 6,440 |
+| Normal | 0.75 | **0.35** | 0.48 | 1,216 |
+| Multi | 0.59 | 0.67 | 0.63 | 6,415 |
 
-If you fork this project and swap in your own sample or test images, we'd recommend:
-- Non-contrast axial CT, tightly cropped to the skull with minimal black space or content outside the skull border
-- No stray marks, annotations, or viewer overlay text in frame
-- A roughly upright, non-rotated head position
-- Reasonably high resolution (our worst-performing early candidates were also our lowest-resolution ones)
+Epidural and normal are the model's weakest classes by recall — meaning the model frequently misses true cases of both, instead defaulting to a different label (often "subdural" or "multi"). This tracks with those two classes having the smallest support in the dataset (roughly 5–19x fewer examples than subdural or multi), consistent with the class-imbalance limitation discussed in the full report.
 
-Even with clean images, expect real variability — this model is correct roughly 6 times out of 10, and its confusion often makes sense in hindsight (e.g., it disproportionately guesses "multi," likely because that class overlaps visually with several others). The full per-class confidence breakdown is shown in the app for exactly this reason — treat the top prediction as informative, not definitive.
+### A note on the demo app's sample images
+
+The 7 images in the demo app were selected, in part, because they reliably produce sensible predictions from this model — they aren't a random or fully representative sample of the model's real-world behavior. This was a deliberate choice to make the app demonstrate the model working as intended, but it means the app's apparent performance will look better than the ~59% overall (and much better than the ~6-35% recall on epidural/normal specifically) if taken as representative. For the model's true class-by-class performance, see the table above rather than the app's live results.
+
+Getting to these final 7 also took real trial and error. Two practical issues came up repeatedly with candidate images pulled from Radiopaedia:
+
+- **Scanner/viewer artifacts outside the skull** (stray marks, positioning lines, DICOM viewer overlay text) occasionally skewed predictions, though not universally — some images with visible marks still classified correctly, so this isn't a hard rule.
+- **Rotated or tilted head positioning** — since it's unclear whether this model's training pipeline included rotation augmentation, we manually corrected the epidural sample's tilt rather than leave it as-is.
+
+If you fork this project and swap in your own sample or test images, we'd recommend non-contrast axial CT, tightly cropped to the skull, a roughly upright head position, and reasonably high resolution — but expect real variability even then, especially for epidural and normal cases.
 
 ---
 
