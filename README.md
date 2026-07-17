@@ -36,13 +36,28 @@ An interactive Streamlit app (`app/streamlit_app.py`) lets users run the CNN on 
 
 | Class | Source |
 |---|---|
-| Epidural | Shif Y, Epidural hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-26277 |
+| Epidural | Haouimi A, Epidural hematoma. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-88365 *(rotated ~20° to correct head tilt)* |
 | Intraparenchymal | Puyó D, Lobar intraparenchymal hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-20297 |
-| Intraventricular | Knipe H, Primary intraventricular hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-53317 |
+| Intraventricular | Puyó Vera D, Intraventricular hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-36523 *(cropped to remove scanner-bed artifacts outside the skull)* |
 | Subarachnoid | Puyó D, Subarachnoid hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-22377 |
 | Subdural | Gaillard F, Subdural hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-17559 |
 | Multi | Sorrentino S, Combination of subdural, epidural, and subarachnoid hemorrhage in an open skull fracture. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-14868 |
-| Normal | Bø H, Normal brain CT. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-230970 |
+| Normal | Glick Y, Normal CT head. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-178062 |
+
+### A note on choosing (or adding) demo images
+
+Getting these 7 images right took real trial and error. Our CNN was trained on DICOM scans rendered through a specific `brain_window` pipeline, and the model's ~59% validation accuracy means it's sensitive to inputs that drift from that distribution. A few early candidate images produced clearly wrong, overconfident predictions — not because the model is broken, but because the images themselves weren't great matches for what it was trained on. Two issues came up repeatedly:
+
+- **Scanner/viewer artifacts outside the skull** (stray marks, positioning lines, DICOM viewer overlay text) — these can visually resemble pathology (e.g., a curved external mark can read like a subdural crescent to a small CNN) and measurably skewed predictions in our testing.
+- **Rotated or tilted head positioning** — since it's unclear whether this model's training pipeline included rotation augmentation, a visibly tilted scan may confuse it more than a straight one.
+
+If you fork this project and swap in your own sample or test images, we'd recommend:
+- Non-contrast axial CT, tightly cropped to the skull with minimal black space or content outside the skull border
+- No stray marks, annotations, or viewer overlay text in frame
+- A roughly upright, non-rotated head position
+- Reasonably high resolution (our worst-performing early candidates were also our lowest-resolution ones)
+
+Even with clean images, expect real variability — this model is correct roughly 6 times out of 10, and its confusion often makes sense in hindsight (e.g., it disproportionately guesses "multi," likely because that class overlaps visually with several others). The full per-class confidence breakdown is shown in the app for exactly this reason — treat the top prediction as informative, not definitive.
 
 ---
 
