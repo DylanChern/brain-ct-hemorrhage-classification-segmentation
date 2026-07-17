@@ -30,6 +30,22 @@ Due to computational constraints, a stratified random sample of 500 images was u
 
 ---
 
+## Demo App — Sample Image Attributions
+
+An interactive Streamlit app (`app/streamlit_app.py`) lets users run the CNN on either an uploaded scan or one of seven pre-loaded sample images — one per class. Since the original training data is proprietary and cannot be redistributed, these sample images are instead sourced from [Radiopaedia.org](https://radiopaedia.org) under the [CC BY-NC-SA 3.0 license](https://creativecommons.org/licenses/by-nc-sa/3.0/) and used here for non-commercial, educational purposes only.
+
+| Class | Source |
+|---|---|
+| Epidural | Shif Y, Epidural hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-26277 |
+| Intraparenchymal | Puyó D, Lobar intraparenchymal hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-20297 |
+| Intraventricular | Knipe H, Primary intraventricular hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-53317 |
+| Subarachnoid | Puyó D, Subarachnoid hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-22377 |
+| Subdural | Gaillard F, Subdural hemorrhage. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-17559 |
+| Multi | Sorrentino S, Combination of subdural, epidural, and subarachnoid hemorrhage in an open skull fracture. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-14868 |
+| Normal | Bø H, Normal brain CT. Case study, Radiopaedia.org (Accessed on 17 Jul 2026) https://doi.org/10.53347/rID-230970 |
+
+---
+
 ## Project Structure
 
 ```
@@ -46,6 +62,11 @@ brain-ct-hemorrhage-classification-segmentation/
 │   └── unet/
 │       ├── data_mask_for_unet.ipynb    # Preprocessing pipeline: generates binary and quad-level segmentation masks
 │       └── unet.ipynb                  # U-Net model architecture, training, and evaluation
+│
+├── app/
+│   ├── streamlit_app.py                # Interactive demo app (upload a scan or pick a sample image)
+│   ├── requirements.txt
+│   └── sample_images/                  # One demo image per class (see attributions above)
 │
 ├── reports/
 │   └── final_report.pdf                # Full project report
