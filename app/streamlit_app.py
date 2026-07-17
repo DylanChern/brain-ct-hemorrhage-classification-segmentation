@@ -41,9 +41,9 @@ DISPLAY_NAMES = {
 
 # Sample image filenames — must exist in sample_images/ alongside this script
 SAMPLE_IMAGES = {
-    "epidural": "epidural_sample.jpeg",
+    "epidural": "epidural_sample.png",
     "intraparenchymal": "intraparenchymal_sample.png",
-    "intraventricular": "intraventricular_sample.jpeg",
+    "intraventricular": "intraventricular_sample.png",
     "subarachnoid": "subarachnoid_sample.png",
     "subdural": "subdural_sample.png",
     "multi": "multi_sample.jpg",
