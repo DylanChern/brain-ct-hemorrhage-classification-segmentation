@@ -61,7 +61,7 @@ Overall validation accuracy (~59%) hides a lot of variation by class. From the f
 | Normal | 0.75 | **0.35** | 0.48 | 1,216 |
 | Multi | 0.59 | 0.67 | 0.63 | 6,415 |
 
-Epidural and normal are the model's weakest classes by recall — meaning the model frequently misses true cases of both, instead defaulting to a different label (often "subdural" or "multi"). This tracks with those two classes having the smallest support in the dataset (roughly 5–19x fewer examples than subdural or multi), consistent with the class-imbalance limitation discussed in the full report.
+Epidural and normal are the model's weakest classes by [recall](https://developers.google.com/machine-learning/crash-course/classification/accuracy-precision-recall#recall_or_true_positive_rate) — meaning the model frequently misses true cases of both, instead defaulting to a different label (often "subdural" or "multi"). This tracks with those two classes having the smallest support in the dataset (roughly 5–19x fewer examples than subdural or multi), consistent with the class-imbalance limitation discussed in the full report.
 
 ### A note on the demo app's sample images
 
