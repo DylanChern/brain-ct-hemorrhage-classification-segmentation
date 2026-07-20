@@ -2,7 +2,8 @@
 
 A machine learning pipeline for the automated detection, classification, and pixel-level segmentation of cerebral hemorrhages from brain CT scans. This project explores a progression of modeling approaches — from baseline logistic regression to convolutional neural networks (CNNs) — and incorporates model interpretability via Grad-CAM++ and pixel-level localization via U-Net segmentation.
 
-📄 [View Final Report](https://www.dropbox.com/scl/fi/nk1s7sfad851srp6ey1vs/MATH_7243_Final_Project-4.pdf?rlkey=cbon4qgjk5rjttifx0dm3x5h6&st=4gkwfeft&dl=0)
+[![View Final Report](https://img.shields.io/badge/View%20Final%20Report-4285F4?style=for-the-badge&logo=readdotcv&logoColor=white)](https://www.dropbox.com/scl/fi/nk1s7sfad851srp6ey1vs/MATH_7243_Final_Project-4.pdf?rlkey=cbon4qgjk5rjttifx0dm3x5h6&st=4gkwfeft&dl=0)
+[![Try the Live Demo](https://img.shields.io/badge/Try%20the%20Live%20Demo-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://brain-ct-classification.streamlit.app)
 
 ---
 
@@ -31,6 +32,8 @@ Due to computational constraints, a stratified random sample of 500 images was u
 ---
 
 ## Demo App — Sample Image Attributions
+
+**[Try the live app here](https://brain-ct-classification.streamlit.app)**
 
 An interactive Streamlit app (`app/streamlit_app.py`) lets users run the CNN on either an uploaded scan or one of seven pre-loaded sample images — one per class. Since the original training data is proprietary and cannot be redistributed, these sample images are instead sourced from [Radiopaedia.org](https://radiopaedia.org) under the [CC BY-NC-SA 3.0 license](https://creativecommons.org/licenses/by-nc-sa/3.0/) and used here for non-commercial, educational purposes only.
 
